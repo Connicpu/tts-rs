@@ -26,12 +26,12 @@ impl Speechifier {
         }
     }
 
-    pub fn start(&mut self) {
+    pub fn start(&mut self, speed: i32) {
         let (tx, rx) = sync_channel(0);
         self.mailbox = Some(tx);
 
         thread::spawn(move || {
-            unsafe { speechify(rx); }
+            unsafe { speechify(rx, speed); }
         });
     }
 
@@ -82,7 +82,7 @@ impl<T> ToWide for T where T: AsRef<OsStr> {
     }
 }
 
-unsafe fn speechify(rx: Receiver<SpeechMessage>) {
+unsafe fn speechify(rx: Receiver<SpeechMessage>, speed: i32) {
     let mut hr;
     let mut voice: *mut winapi::ISpVoice = ptr::null_mut();
 
@@ -108,7 +108,7 @@ unsafe fn speechify(rx: Receiver<SpeechMessage>) {
     );
 
     if succeeded(hr) {
-        (*voice).SetRate(2);
+        (*voice).SetRate(speed);
         speech_loop(rx, &mut *voice);
         (*voice).Release();
     }

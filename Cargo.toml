@@ -5,4 +5,4 @@ authors = ["Connor Hilarides <connorcpu@live.com>"]
 
 [dependencies]
 winapi = "*"
-ole32 = "*"
+ole32-sys = "*"

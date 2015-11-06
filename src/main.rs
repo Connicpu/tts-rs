@@ -9,7 +9,7 @@ fn main() {
     let filename = args.next();
 
     let mut tts = tts::Speechifier::new();
-    tts.start();
+    tts.start(-10);
 
     match filename {
         Some(filename) => {
